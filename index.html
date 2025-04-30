@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Pengiriman Paket</title>
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/box-seam.svg">
+    <link href="https://fonts.googleapis.com/css?family=Exo:700,600,500,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f7fafc 0%, #e3e6f3 100%);
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #111;
+            transition: background 0.4s;
+        }
+        body.dark {
+            background: linear-gradient(135deg, #23272f 0%, #181a20 100%);
+            color: #f7f7f7;
+        }
+        h2 {
+            text-align: center;
+            color: #111;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-weight: 900;
+            font-size: 2.1em;
+            text-shadow: 0 2px 12px #eaeaea, 0 1px 0 #fff;
+            transition: color 0.3s;
+        }
+        body.dark h2 {
+            color: #fff;
+            text-shadow: 0 2px 12px #222, 0 1px 0 #222;
+        }
+        form {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1.5px 0 #111 inset;
+            max-width: 420px;
+            width: 98vw;
+            margin: 12px auto 0 auto;
+            padding: 22px 20px 12px 20px;
+            border: 3px solid #111;
+            position: relative;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+        }
+        body.dark form {
+            background: #23272f;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 32px #111a;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 8px #ededed;
+            margin-bottom: 0;
+            border: 2.5px solid #222;
+            transition: background 0.3s, border 0.3s;
+        }
+        body.dark table {
+            background: #23272f;
+            border: 2.5px solid #fff;
+        }
+        td {
+            padding: 10px 12px;
+            vertical-align: top;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            border-bottom: 1.5px solid #eaeaea;
+            color: #111;
+            transition: color 0.3s, background 0.3s;
+        }
+        body.dark td {
+            color: #f7f7f7;
+            border-bottom: 1.5px solid #333;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .label {
+            width: 120px;
+            color: #111;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            border-right: 2px solid #222;
+            background: #f7f7f7;
+            transition: background 0.3s, color 0.3s, border 0.3s;
+        }
+        body.dark .label {
+            background: #23272f;
+            color: #fff;
+            border-right: 2px solid #fff;
+        }
+        input, textarea {
+            width: 100%;
+            border: 2.5px solid #222;
+            border-radius: 9px;
+            padding: 10px 12px;
+            font-size: 1.05em;
+            background: #f9f9fb;
+            transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: #111;
+        }
+        body.dark input, body.dark textarea {
+            background: #23272f;
+            color: #fff;
+            border: 2.5px solid #fff;
+        }
+        input:focus, textarea:focus {
+            border: 2.5px solid #111;
+            outline: none;
+            background: #f0f0f0;
+            box-shadow: 0 2px 8px #2221;
+        }
+        body.dark input:focus, body.dark textarea:focus {
+            background: #23272f;
+            border: 2.5px solid #00e0ff;
+            box-shadow: 0 2px 8px #00e0ff33;
+        }
+        button {
+            background: linear-gradient(90deg, #111 60%, #3b3b3b 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 28px;
+            font-size: 1.08em;
+            font-weight: 800;
+            cursor: pointer;
+            margin: 0 8px 0 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            transition: background 0.2s, transform 0.1s, color 0.3s;
+            letter-spacing: 1px;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+        }
+        body.dark button {
+            background: linear-gradient(90deg, #00e0ff 60%, #0077b6 100%);
+            color: #23272f;
+        }
+        button:last-child {
+            margin-right: 0;
+        }
+        button:hover {
+            background: #222;
+            transform: translateY(-2px) scale(1.03);
+            filter: brightness(1.08);
+        }
+        .navbar {
+            width: 100vw;
+            background: #fff;
+            border-bottom: 3px solid #111;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 0 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s, border 0.3s;
+        }
+        body.dark .navbar {
+            background: #23272f;
+            border-bottom: 3px solid #fff;
+        }
+        .navbar button {
+            background: #111;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 1em;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 1px;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            outline: none;
+        }
+        .navbar .dark-toggle {
+            background: none;
+            color: #111;
+            border: 2px solid #111;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 8px;
+            margin-left: 12px;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        body.dark .navbar .dark-toggle {
+            color: #00e0ff;
+            border: 2px solid #00e0ff;
+            background: #181a20;
+        }
+        .navbar button:disabled {
+            background: #eaeaea;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .navbar button:hover:not(:disabled) {
+            background: #222;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .preview-actions, #a5-preview .preview-actions {
+            display: none !important;
+        }
+        #a5-preview-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.25);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #a5-preview {
+            display: flex;
+            width: 540px;
+            min-height: 340px;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 22px;
+            border: 4px solid #111;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+            position: relative;
+            padding: 18px 22px 12px 22px;
+            overflow: hidden;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 800;
+            color: #111;
+            margin: 0;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 0;
+            animation: slideUp 0.4s;
+            transition: background 0.3s, border 0.3s, color 0.3s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(40px) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        body.dark #a5-preview {
+            background: #23272f;
+            border: 4px solid #00e0ff;
+            color: #fff;
+        }
+        .a5-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: none;
+            z-index: 2;
+            position: relative;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 800;
+            color: #111;
+            border: 2.5px solid #111;
+            overflow: hidden;
+            transition: background 0.3s, border 0.3s, color 0.3s;
+        }
+        body.dark .a5-table {
+            background: #23272f;
+            border: 2.5px solid #00e0ff;
+            color: #fff;
+        }
+        .a5-label {
+            width: 110px;
+            color: #111;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            padding: 9px 10px 9px 8px;
+            vertical-align: top;
+            font-size: 1em;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            background: #f7f7f7;
+            border-right: 2px solid #222;
+            transition: background 0.3s, color 0.3s, border 0.3s;
+        }
+        body.dark .a5-label {
+            background: #23272f;
+            color: #00e0ff;
+            border-right: 2px solid #00e0ff;
+        }
+        .a5-value {
+            color: #111;
+            font-size: 1em;
+            padding: 9px 10px 9px 8px;
+            vertical-align: top;
+            word-break: break-word;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 800;
+            background: #fff;
+            transition: background 0.3s, color 0.3s;
+        }
+        body.dark .a5-value {
+            background: #23272f;
+            color: #fff;
+        }
+        .a5-pengirim {
+            margin-top: 14px;
+            font-size: 1em;
+            color: #111;
+            padding: 12px 12px;
+            background: #f7f7f7;
+            border: 2.5px solid #111;
+            border-radius: 10px;
+            box-shadow: 0 1px 8px #ededed;
+            z-index: 2;
+            position: relative;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 800;
+            transition: background 0.3s, border 0.3s, color 0.3s;
+        }
+        body.dark .a5-pengirim {
+            background: #23272f;
+            border: 2.5px solid #00e0ff;
+            color: #00e0ff;
+        }
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            min-width: 220px;
+            background: #111;
+            color: #fff;
+            padding: 16px 28px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #0002;
+            font-size: 1.08em;
+            font-family: 'Exo', 'Segoe UI', Arial, sans-serif;
+            font-weight: 800;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 99999;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(-20px);
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .toast.success {
+            background: linear-gradient(90deg, #00c851 60%, #007e33 100%);
+        }
+        .toast.error {
+            background: linear-gradient(90deg, #ff4444 60%, #cc0000 100%);
+        }
+        .modal-actions {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .modal-action-btn {
+            background: none;
+            border: none;
+            font-size: 1.6em;
+            cursor: pointer;
+            color: #111;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.18s, color 0.18s, transform 0.1s;
+        }
+        .modal-action-btn:active {
+            transform: scale(0.93);
+        }
+        .modal-action-btn:hover {
+            background: #eaeaea;
+        }
+        body.dark .modal-action-btn {
+            color: #00e0ff;
+            background: none;
+        }
+        body.dark .modal-action-btn:hover {
+            background: #23272f;
+        }
+        @media (max-width: 700px) {
+            form {
+                max-width: 98vw;
+                width: 98vw;
+                padding: 6px;
+            }
+            #a5-preview {
+                max-width: 98vw;
+                width: 98vw;
+                min-width: unset;
+                min-height: unset;
+                padding: 8px 2vw 8px 2vw;
+            }
+            .toast {
+                right: 8px;
+                left: 8px;
+                top: 8px;
+                min-width: unset;
+                width: auto;
+                font-size: 1em;
+                padding: 12px 10px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <button type="button" id="navbarPreviewBtn" title="Preview">👁️</button>
+        <button type="button" id="navbarBackBtn" disabled style="display:none"></button>
+        <button type="button" class="dark-toggle" id="darkToggleBtn" title="Toggle Dark Mode">🌙</button>
+    </div>
+    <h2>Form Pengiriman Paket</h2>
+    <form id="paketForm" autocomplete="off">
+        <table border="0">
+            <tr>
+                <td class="label">Kepada Yth.</td>
+                <td><input type="text" name="kepada" required placeholder="Nama penerima" autofocus></td>
+            </tr>
+            <tr>
+                <td class="label">Alamat</td>
+                <td><textarea name="alamat" rows="3" required placeholder="Alamat lengkap"></textarea></td>
+            </tr>
+            <tr>
+                <td class="label">No HP</td>
+                <td><input type="text" name="nohp" required placeholder="08xxxxxxxxxx" pattern="[0-9]{10,15}" maxlength="15"></td>
+            </tr>
+            <tr>
+                <td class="label">Pengirim</td>
+                <td>
+                    <strong>Kanvas Merchandise</strong><br>
+                    JL. RIAU BARAT NO.21 KEC. SANANWETAN KOTA BLITAR<br>
+                    TELP. 082257423324
+                </td>
+            </tr>
+        </table>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px;">
+            <button type="reset" id="resetBtn" style="background:#eaeaea;color:#111;border:2px solid #aaa;">Reset</button>
+        </div>
+    </form>
+
+    <!-- Modal Preview -->
+    <div id="a5-preview-modal">
+        <div id="a5-preview">
+            <div class="modal-actions" id="modalActions">
+                <button type="button" id="modalDownloadBtn" class="modal-action-btn" title="Download JPG"><span aria-label="Download">⬇️</span></button>
+                <button type="button" id="modalBackBtn" class="modal-action-btn" title="Kembali"><span aria-label="Kembali">❌</span></button>
+            </div>
+            <table class="a5-table">
+                <tr>
+                    <td class="a5-label">Kepada Yth.</td>
+                    <td class="a5-value" id="a5-kepada"></td>
+                </tr>
+                <tr>
+                    <td class="a5-label">Alamat</td>
+                    <td class="a5-value" id="a5-alamat"></td>
+                </tr>
+                <tr>
+                    <td class="a5-label">No HP</td>
+                    <td class="a5-value" id="a5-nohp"></td>
+                </tr>
+            </table>
+            <div class="a5-pengirim">
+                <strong>Kanvas Merchandise</strong><br>
+                JL. RIAU BARAT NO.21 KEC. SANANWETAN KOTA BLITAR<br>
+                TELP. 082257423324
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+    // Toast notification
+    function showToast(msg, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.className = 'toast show ' + type;
+        setTimeout(() => { toast.className = 'toast ' + type; }, 2600);
+    }
+
+    // Navbar button references
+    const navbarPreviewBtn = document.getElementById('navbarPreviewBtn');
+    const navbarBackBtn = document.getElementById('navbarBackBtn');
+    const darkToggleBtn = document.getElementById('darkToggleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const form = document.getElementById('paketForm');
+
+    // Tombol di modal
+    const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+    const modalBackBtn = document.getElementById('modalBackBtn');
+    const modalActions = document.getElementById('modalActions');
+
+    // Dark mode toggle
+    function setDarkMode(on) {
+        if (on) {
+            document.body.classList.add('dark');
+            localStorage.setItem('darkMode', '1');
+            darkToggleBtn.innerText = '☀️';
+            darkToggleBtn.title = 'Switch to Light Mode';
+        } else {
+            document.body.classList.remove('dark');
+            localStorage.setItem('darkMode', '0');
+            darkToggleBtn.innerText = '🌙';
+            darkToggleBtn.title = 'Switch to Dark Mode';
+        }
+    }
+    darkToggleBtn.onclick = () => setDarkMode(!document.body.classList.contains('dark'));
+    if (localStorage.getItem('darkMode') === '1') setDarkMode(true);
+
+    // Validasi nomor HP
+    function isValidNoHp(nohp) {
+        return /^[0-9]{10,15}$/.test(nohp);
+    }
+
+    // Tombol Preview (Navbar)
+    navbarPreviewBtn.addEventListener('click', function() {
+        // Validasi manual
+        const kepada = form.kepada.value.trim();
+        const alamat = form.alamat.value.trim();
+        const nohp = form.nohp.value.trim();
+        if (!kepada || !alamat || !nohp) {
+            showToast('Semua field wajib diisi!', 'error');
+            return;
+        }
+        if (!isValidNoHp(nohp)) {
+            showToast('No HP harus angka (10-15 digit)', 'error');
+            form.nohp.focus();
+            return;
+        }
+        // Isi preview A5
+        document.getElementById('a5-kepada').innerText = kepada;
+        document.getElementById('a5-alamat').innerHTML = alamat.replace(/\n/g, '<br>');
+        document.getElementById('a5-nohp').innerText = nohp;
+
+        // Sembunyikan form, tampilkan modal preview
+        form.style.visibility = 'hidden';
+        document.getElementById('a5-preview-modal').style.display = 'flex';
+
+        // Navbar: Preview disable
+        navbarPreviewBtn.disabled = true;
+
+        document.getElementById('a5-preview-modal').scrollIntoView({behavior: 'smooth'});
+        showToast('Preview berhasil!', 'success');
+    });
+
+    // Tombol Download (Modal)
+    modalDownloadBtn.addEventListener('click', function() {
+        // Sembunyikan tombol aksi sebelum render
+        modalActions.style.visibility = 'hidden';
+        // Sembunyikan navbar & overlay sementara saat render
+        document.querySelector('.navbar').style.visibility = 'hidden';
+        document.getElementById('a5-preview-modal').style.background = 'transparent';
+
+        // Salin style background dan border ke #a5-preview secara inline agar html2canvas menangkap warna persis
+        const preview = document.getElementById('a5-preview');
+        const computed = window.getComputedStyle(preview);
+        const oldStyle = preview.getAttribute('style') || '';
+        preview.setAttribute('data-old-style', oldStyle);
+        preview.style.background = computed.background;
+        preview.style.border = computed.border;
+        preview.style.color = computed.color;
+
+        // Untuk child table dan .a5-pengirim juga
+        const a5table = preview.querySelector('.a5-table');
+        const a5pengirim = preview.querySelector('.a5-pengirim');
+        const tableComputed = window.getComputedStyle(a5table);
+        const pengirimComputed = window.getComputedStyle(a5pengirim);
+        a5table.setAttribute('data-old-style', a5table.getAttribute('style') || '');
+        a5pengirim.setAttribute('data-old-style', a5pengirim.getAttribute('style') || '');
+        a5table.style.background = tableComputed.background;
+        a5table.style.border = tableComputed.border;
+        a5table.style.color = tableComputed.color;
+        a5pengirim.style.background = pengirimComputed.background;
+        a5pengirim.style.border = pengirimComputed.border;
+        a5pengirim.style.color = pengirimComputed.color;
+
+        setTimeout(() => {
+            html2canvas(preview, {
+                backgroundColor: null,
+                useCORS: true,
+                width: preview.offsetWidth,
+                height: preview.offsetHeight,
+                scale: 2
+            }).then(canvas => {
+                // Kembalikan style semula
+                preview.setAttribute('style', preview.getAttribute('data-old-style') || '');
+                a5table.setAttribute('style', a5table.getAttribute('data-old-style') || '');
+                a5pengirim.setAttribute('style', a5pengirim.getAttribute('data-old-style') || '');
+
+                // Tampilkan kembali tombol aksi setelah render
+                modalActions.style.visibility = '';
+                document.querySelector('.navbar').style.visibility = 'visible';
+                document.getElementById('a5-preview-modal').style.background = 'rgba(0,0,0,0.25)';
+                const link = document.createElement('a');
+                link.download = 'label-pengiriman-a5.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 1.0);
+                link.click();
+                showToast('Berhasil diunduh!', 'success');
+            });
+        }, 50);
+    });
+
+    // Tombol Kembali (Modal)
+    modalBackBtn.addEventListener('click', function() {
+        document.getElementById('a5-preview-modal').style.display = 'none';
+        form.style.visibility = 'visible';
+        form.scrollIntoView({behavior: 'smooth'});
+        navbarPreviewBtn.disabled = false;
+        showToast('Kembali ke form', 'success');
+    });
+
+    // Navbar BackBtn tetap untuk klik di luar modal
+    navbarBackBtn.addEventListener('click', function() {
+        modalBackBtn.click();
+    });
+
+    // Tutup modal jika klik di luar preview
+    document.getElementById('a5-preview-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            modalBackBtn.click();
+        }
+    });
+
+    // Nonaktifkan submit form default
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+    });
+
+    // Reset form
+    resetBtn.addEventListener('click', function() {
+        setTimeout(() => {
+            form.kepada.focus();
+            showToast('Form direset', 'success');
+        }, 10);
+    });
+
+    // Enter pada input => next field
+    Array.from(form.querySelectorAll('input,textarea')).forEach((el, idx, arr) => {
+        el.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                if (arr[idx+1]) arr[idx+1].focus();
+            }
+        });
+    });
+
+    // Autofocus pada field pertama saat load
+    window.onload = () => { form.kepada.focus(); };
+    </script>
+</body>
+</html>
+``` 
