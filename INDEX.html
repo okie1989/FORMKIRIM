@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Pengiriman Paket</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo', sans-serif;
+            font-weight: 800;
+        }
+
+        body {
+            background: white;
+            color: #111;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            transition: 0.3s;
+        }
+
+        body.dark {
+            background: #111;
+            color: white;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-box {
+            background: white;
+            border: 3px solid #111;
+            border-radius: 12px;
+            padding: 1.2rem 1rem 1rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        body.dark .form-box {
+            background: #111;
+            border-color: white;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #bbb; /* tambahkan border */
+            border-bottom: 2.5px solid #111; /* tetap ada border bawah lebih tebal */
+            border-radius: 6px; /* sedikit radius */
+            font-size: 1rem;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #111;
+            outline: none;
+        }
+
+        body.dark input,
+        body.dark textarea {
+            border: 1.5px solid #444;
+            border-bottom: 2.5px solid white;
+            background: #111;
+            color: white;
+        }
+        body.dark input:focus,
+        body.dark textarea:focus {
+            border-color: #fff;
+        }
+
+        textarea {
+            min-height: 48px;
+            resize: vertical;
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0;
+        }
+
+        .add-phone-btn, .remove-phone-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            min-width: 36px;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body.dark .add-phone-btn, body.dark .remove-phone-btn {
+            background: white;
+            color: #111;
+        }
+        .remove-phone-btn {
+            background: #e53935;
+            color: #fff;
+        }
+
+        .preview-box {
+            padding: 2rem;
+            margin-top: 2rem;
+            background: white;
+        }
+
+        body.dark .preview-box {
+            border-image: repeating-linear-gradient(135deg, #fff 0 18px, #111 18px 36px) 30;
+            background: #111;
+        }
+
+        .preview-section {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .preview-section.pengirim-section {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border: 1.5px dashed #bbb;
+            text-align: left;
+        }
+
+        .pengirim-flex {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+            margin: 0.5rem 0;
+        }
+
+        .pengirim-info {
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .pengirim-address {
+            display: block;
+            margin: 0.3em 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .pengirim-sosmed {
+            display: flex;
+            gap: 0.8em;
+            margin-top: 0.3em;
+            flex-wrap: wrap;
+        }
+
+        .pengirim-sosmed-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+            font-size: 0.85em;
+            transition: 0.2s;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .pengirim-sosmed-item:hover {
+            opacity: 0.8;
+            transform: scale(0.98);
+            background: rgba(0,0,0,0.05);
+        }
+
+        .pengirim-sosmed-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        body.dark .pengirim-address {
+            color: #ccc;
+        }
+
+        body.dark .pengirim-sosmed-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .preview-value {
+            border: 1.5px solid #bbb;
+            border-radius: 6px;
+            padding: 8px 10px;
+            background: #fafafa;
+            margin-top: 2px;
+            font-size: 1rem;
+            min-height: 32px;
+            word-break: break-word;
+            text-align: center;
+        }
+
+        .preview-section.pengirim-section .preview-value {
+            text-align: left;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+        }
+        .modal-overlay.hide {
+            display: none;
+        }
+
+        .preview-modal-content {
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            max-width: 700px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .form-box.preview-box {
+            border: 8px solid transparent;
+            background: #f9f9f9;
+            padding: 2rem 1.5rem;
+            max-width: 600px;
+        }
+        body.dark .form-box.preview-box {
+            border-image: repeating-linear-gradient(135deg, #fff 0 18px, #111 18px 36px) 30;
+            background: #111;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-divider {
+            border: none;
+            border-top: 2px solid #bbb;
+            margin: 1.2rem 0;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: #fff;
+            color: #111;
+            border: 2px solid #bbb;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        /* Loading overlay for download */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #111;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        body.dark .loading-overlay {
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+        }
+        /* Tambahkan di bagian style */
+.force-light-mode {
+
+    background: #fff !important;
+    color: #111 !important;
+}
+
+.force-light-mode .pengirim-address {
+    color: #666 !important;
+}
+
+.force-light-mode .pengirim-sosmed-item:hover {
+    background: rgba(0,0,0,0.05) !important;
+}
+/* Tambahkan di CSS */
+.preview-box-capture {
+    border: 12px solid transparent;
+    border-image: repeating-linear-gradient(
+        135deg,
+        #111 0 18px,
+        #fff 18px 36px,
+        #e53935 36px 54px,
+        #fff 54px 72px,
+        #111 72px 90px
+    ) 40;
+    background: #fff !important;
+    color: #111 !important;
+    width: 600px;
+    padding: 2rem 1.5rem;
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: 0 0 24px 0 rgba(0,0,0,0.10), 0 2px 8px 0 rgba(229,57,53,0.08);
+    border-radius: 18px;
+}
+/* Untuk dark mode download, tetap gunakan border-image terang */
+body.dark .preview-box-capture {
+    border-image: repeating-linear-gradient(
+        135deg,
+        #fff 0 18px,
+        #111 18px 36px,
+        #e53935 36px 54px,
+        #111 54px 72px,
+        #fff 72px 90px
+    ) 40;
+    background: #fff !important;
+    color: #111 !important;
+}
+
+        .preview-value {
+            border: 1.5px solid #bbb;
+            border-radius: 6px;
+            padding: 8px 10px;
+            background: #fafafa;
+            margin-top: 2px;
+            font-size: 1rem;
+            min-height: 32px;
+            word-break: break-word;
+        }
+        body.dark .preview-value,
+        .force-light-mode .preview-value {
+            border: 1.5px solid #bbb !important;
+            background: #fff !important;
+            color: #111 !important;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FORM PENGIRIMAN</h1>
+        </div>
+
+        <div class="form-box">
+            <div class="input-group">
+                <label for="kepada">KEPADA YTH.</label>
+                <input type="text" id="kepada" required>
+            </div>
+
+            <div class="input-group">
+                <label for="alamat">ALAMAT</label>
+                <textarea id="alamat" rows="2" required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>NOMOR HP</label>
+                <div id="phone-inputs">
+                    <div class="phone-input-group">
+                        <input type="text" class="phone-input" required pattern="[0-9]{10,15}">
+                        <button type="button" class="add-phone-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" onclick="resetForm()" style="background:#eee;">RESET</button>
+                <button type="button" onclick="showPreview()" style="background:#111;color:white;">PREVIEW</button>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div id="preview-modal-overlay" class="modal-overlay hide">
+            <div class="preview-modal-content">
+                <button class="modal-close-btn" onclick="closePreview()">&times;</button>
+                <div class="form-box preview-box" id="preview-box-main">
+                    <!-- Preview content will be rendered here -->
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="downloadLabel()" style="background:#111;color:white;">DOWNLOAD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌓</button>
+    <div id="capture-container" style="position:absolute; left:-9999px; top:-9999px; background:white;"></div>
+    <div id="loading-overlay" class="loading-overlay" style="display:none;">Mempersiapkan gambar...</div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+        }
+
+        function validateForm() {
+            const kepada = document.getElementById('kepada').value.trim();
+            const alamat = document.getElementById('alamat').value.trim();
+            const phones = Array.from(document.querySelectorAll('.phone-input')).map(input => input.value.trim()).filter(v => v);
+
+            if (!kepada || !alamat || phones.length === 0) {
+                alert('Harap isi semua field wajib!');
+                return false;
+            }
+
+            if (phones.some(phone => !/^[0-9]{10,15}$/.test(phone))) {
+                alert('Nomor HP harus 10-15 digit angka!');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Helper: Render preview HTML (for both modal and download)
+        function renderPreviewHTML({kepada, alamat, phones}, hideHeader = false) {
+            return `
+                ${hideHeader ? '' : '<h2></h2>'}
+                
+                <div class="preview-section">
+                    <label>KEPADA YTH.</label>
+                    <div class="preview-value">${kepada}</div>
+                </div>
+                <div class="preview-section">
+                    <label>ALAMAT</label>
+                    <div class="preview-value">${alamat}</div>
+                </div>
+                <div class="preview-section">
+                    <label>NOMOR HP</label>
+                    <div class="preview-value">${phones.join(', ')}</div>
+                </div>
+                <div class="preview-section pengirim-section">
+                    <label>PENGIRIM</label>
+                    <div class="pengirim-flex">
+                        <img src="images/LOGO.png" alt="Logo Kanvas" class="pengirim-logo" width="50" height="70">
+                        <div class="pengirim-info">
+                            <strong>KANVAS MERCHANDISE</strong>
+                            <span class="pengirim-address">Jl.Riau Barat No.21, Kec. Sananwetan, Kota Blitar</span>
+                            <div class="pengirim-sosmed">
+                                <span class="pengirim-sosmed-item">
+                                    <img src="images/whatsapp.png" class="pengirim-sosmed-icon">
+                                    <span>082257423324</span>
+                                </span>
+                                <span class="pengirim-sosmed-item">
+                                    <img src="images/instagram.png" class="pengirim-sosmed-icon">
+                                    <span>kanvas.merch</span>
+                                </span>
+                                <span class="pengirim-sosmed-item">
+                                    <img src="images/tiktok.png" class="pengirim-sosmed-icon">
+                                    <span>kanvasmerch</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getFormData() {
+            return {
+                kepada: document.getElementById('kepada').value.trim(),
+                alamat: document.getElementById('alamat').value.trim(),
+                phones: Array.from(document.querySelectorAll('.phone-input')).map(input => input.value.trim()).filter(v => v)
+            };
+        }
+
+        // Improved Preview: always use light mode for preview content
+        function showPreview() {
+            if (!validateForm()) return;
+            const data = getFormData();
+            const previewBox = document.getElementById('preview-box-main');
+            previewBox.innerHTML = renderPreviewHTML(data, false);
+
+            // Force light mode for preview
+            previewBox.classList.add('force-light-mode');
+            document.getElementById('preview-modal-overlay').classList.remove('hide');
+        }
+
+        function closePreview() {
+            document.getElementById('preview-modal-overlay').classList.add('hide');
+        }
+
+        // Improved Download: capture exactly what is shown in the preview modal
+        function downloadLabel() {
+            // Sembunyikan tombol close dan tombol download
+            const closeBtn = document.querySelector('.modal-close-btn');
+            const downloadBtn = document.querySelector('.modal-actions button');
+            closeBtn.style.visibility = 'hidden';
+            downloadBtn.style.visibility = 'hidden';
+
+            // Show loading overlay
+            document.getElementById('loading-overlay').style.display = '';
+
+            const previewBox = document.getElementById('preview-box-main');
+
+            // Tunggu gambar di previewBox selesai load
+            const images = previewBox.querySelectorAll('img');
+            let loaded = 0;
+            if (images.length === 0) {
+                doCapture();
+            } else {
+                images.forEach(img => {
+                    if (img.complete) {
+                        if (++loaded === images.length) doCapture();
+                    } else {
+                        img.onload = img.onerror = () => {
+                            if (++loaded === images.length) doCapture();
+                        };
+                    }
+                });
+            }
+
+            function doCapture() {
+                html2canvas(previewBox, {
+                    scale: 2,
+                    backgroundColor: "#fff",
+                    useCORS: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'label-pengiriman.jpg';
+                    link.href = canvas.toDataURL('image/jpeg', 0.98);
+                    link.click();
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    // Tampilkan kembali tombol
+                    closeBtn.style.visibility = '';
+                    downloadBtn.style.visibility = '';
+                }).catch(() => {
+                    alert('Gagal membuat gambar. Coba ulangi.');
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    closeBtn.style.visibility = '';
+                    downloadBtn.style.visibility = '';
+                });
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-phone-btn')) {
+                const phoneInputs = document.getElementById('phone-inputs');
+                const group = document.createElement('div');
+                group.className = 'phone-input-group';
+                group.innerHTML = `
+                    <input type="text" class="phone-input" required pattern="[0-9]{10,15}">
+                    <button type="button" class="remove-phone-btn" style="background:#e53935;color:#fff;">-</button>
+                `;
+                phoneInputs.appendChild(group);
+            }
+            if (e.target.classList.contains('remove-phone-btn')) {
+                e.target.parentElement.remove();
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('kepada').value = '';
+            document.getElementById('alamat').value = '';
+            document.getElementById('phone-inputs').innerHTML = `
+                <div class="phone-input-group">
+                    <input type="text" class="phone-input" required pattern="[0-9]{10,15}">
+                    <button type="button" class="add-phone-btn">+</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+
