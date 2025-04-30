@@ -356,7 +356,7 @@ body.dark .preview-box-capture {
             padding: 8px 10px;
             background: #fafafa;
             margin-top: 2px;
-            font-size: 1rem;
+            font-size: 25px;
             min-height: 32px;
             word-break: break-word;
         }
@@ -524,6 +524,9 @@ body.dark .preview-box-capture {
 
             const previewBox = document.getElementById('preview-box-main');
 
+            // Pastikan style preview sama persis saat capture
+            previewBox.classList.add('force-light-mode');
+
             // Tunggu gambar di previewBox selesai load
             const images = previewBox.querySelectorAll('img');
             let loaded = 0;
@@ -542,10 +545,12 @@ body.dark .preview-box-capture {
             }
 
             function doCapture() {
+                // Gunakan previewBox langsung, tidak perlu clone
                 html2canvas(previewBox, {
                     scale: 2,
                     backgroundColor: "#fff",
-                    useCORS: true
+                    useCORS: true,
+                    // windowWidth dan windowHeight tidak perlu diatur, biarkan default agar presisi
                 }).then(canvas => {
                     const link = document.createElement('a');
                     link.download = 'label-pengiriman.jpg';
